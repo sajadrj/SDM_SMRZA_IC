@@ -1,4 +1,3 @@
-
 from pickle import load
 from numpy import argmax
 from keras.preprocessing.sequence import pad_sequences
@@ -19,11 +18,13 @@ def extract_feature(filename):
     image = preprocess_input(image)
     feature = model.predict(image, verbose=0)
     return feature
+
 def word_for_id(integer, tokenizer):
 	for word, index in tokenizer.word_index.items():
 		if index == integer:
 			return word
 	return None
+
 def generate_desc(model, tokenizer, photo, max_length):
     in_text = 'startseq'
     for i in range(max_length):
@@ -38,11 +39,13 @@ def generate_desc(model, tokenizer, photo, max_length):
         if word == 'endseq':
             break
     return in_text
-tokenizer = load(open('C:/Users/zahraGhorbani/Desktop/dataset/tokenizer.pkl', 'rb'))
+
+tokenizer = load(open('C:/Users/Asus/ImageCaption/SDM_SMRZA_IC/tokenizer.pkl', 'rb'))
 max_length = 34
-model = load_model('C:/Users/zahraGhorbani/Desktop/dataset/modell_0.h5')
-photo = extract_feature('C:/Users/zahraGhorbani/Desktop/dataset/Capture3.PNG')
+model = load_model('C:/Users/Asus/ImageCaption/SDM_SMRZA_IC/modell_0.h5')
+photo = extract_feature('C:/Users/Asus/ImageCaption/SDM_SMRZA_IC/Picture2.jpg') #photo_2021-02-06_19-01-15.jpg
 description = generate_desc(model, tokenizer, photo, max_length)
+
 def convert(lst): 
     return ' '.join(lst).split() 
 
@@ -52,9 +55,11 @@ def reduce(description):
     ls.pop(0)
     ls.pop(-1)
     return ls
+
 description=reduce(description)  
 description=' '.join(description)
 print(description)
+
 #translate
 !pip install google_trans_new
 from google_trans_new import google_translator  
@@ -64,8 +69,8 @@ print(translate_text)
 
 #tts
 !pip install gTTS
-text_file = open("C:/Users/zahraGhorbani/Desktop/dataset/Output.txt", "w")
+text_file = open("C:/Users/Asus/ImageCaption/SDM_SMRZA_IC/ForVoice.txt", "w")
 text_file.write(description)
 text_file.close()
-!gtts-cli  --file C:/Users/zahraGhorbani/Desktop/dataset/Output.txt --output C:/Users/zahraGhorbani/Desktop/dataset/Output3.mp3
+!gtts-cli  --file C:/Users/Asus/ImageCaption/SDM_SMRZA_IC/ForVoice.txt --output C:/Users/Asus/ImageCaption/SDM_SMRZA_IC/ForVoice.mp3
 
